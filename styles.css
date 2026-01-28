@@ -1,0 +1,48 @@
+/* Minimal external CSS (we'll expand in next class) */
+/* 1) Type selector (h2), ID (#site-title), Class (.nav-link) demonstrated here */
+
+body {
+  font-family: 'Roboto', sans-serif;
+  background-color: #fbfbfd; /* subtle background color */
+  color: #222;
+}
+
+h2 {
+  font-family: 'Playfair Display', serif; /* type selector example */
+}
+
+#site-title {
+  font-weight: 700; /* ID selector example */
+}
+
+.nav-link:hover, .nav-link:focus {
+  text-decoration: underline; /* pseudo-class example */
+}
+
+/* Carousel caption readable contrast */
+.carousel-caption h5 {
+  font-family: 'Playfair Display', serif;
+}
+
+/* Small responsive tweak for figures */
+figure img { display: block; width:100%; height:auto; }
+
+/* Placeholder: background-image could be toggled in next class */
+/* body { background-image: url('path/to/image.jpg'); background-size: cover; } */
+
+/* Make gallery images circular and responsive */
+.gallery-figure img {
+  width: 100%;
+  height: 220px; /* fixed box to make circle consistent */
+  object-fit: cover;
+  border-radius: 50%;
+  display: block;
+}
+
+@media (min-width: 768px) {
+  .gallery-figure img { height: 200px; }
+}
+
+@media (min-width: 1200px) {
+  .gallery-figure img { height: 220px; }
+}
