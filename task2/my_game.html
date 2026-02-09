@@ -1,0 +1,304 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Archery Game</title>
+
+    <style>
+        body {
+            margin: 0;
+            background: white;
+            overflow: hidden;
+            font-family: Arial, sans-serif;
+        }
+
+        #game {
+            position: relative;
+            width: 100vw;
+            height: 100vh;
+            background: white;
+        }
+
+        #bow {
+            position: absolute;
+            left: 40px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 64px;
+            user-select: none;
+        }
+
+        .arrow {
+            position: absolute;
+            width: 18px; /* reduced to 50% */
+            height: auto;
+            transform-origin: left center;
+            pointer-events: none;
+        }
+
+        #target {
+            position: absolute;
+            right: 80px;
+            top: 50%;
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background: radial-gradient(red 10%, yellow 30%, blue 55%, black 70%);
+            transform: translateY(-50%);
+        }
+
+        #score {
+            position: absolute;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        #timeLeft {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        #difficultyBtn {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            padding: 10px 16px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="game">
+        <div id="score">Score: 0</div>
+        <button id="difficultyBtn">Difficulty: Easy</button>
+        <div id="bow">🏹</div>
+        <div id="target"></div>
+    </div>
+
+    <script>
+        const game = document.getElementById("game");
+        const target = document.getElementById("target");
+        const scoreEl = document.getElementById("score");
+        const difficultyBtn = document.getElementById("difficultyBtn");
+        const bow = document.getElementById('bow');
+
+        // create time display element
+        const timeEl = document.createElement('div');
+        timeEl.id = 'timeLeft';
+        timeEl.textContent = 'Time: 30';
+        game.appendChild(timeEl);
+
+        let score = 0;
+        let timeLeft = 30; // seconds
+        let isRunning = true;
+        let gameOver = false;
+
+        /* ===== DIFFICULTY SETTINGS ===== */
+        const difficulties = [
+            { name: "Easy", speed: 2 },
+            { name: "Medium", speed: 4 },
+            { name: "Hard", speed: 7 }
+        ];
+
+        let difficultyIndex = 0;
+        let targetSpeed = difficulties[difficultyIndex].speed;
+
+        difficultyBtn.addEventListener("click", changeDifficulty);
+
+        function changeDifficulty() {
+            difficultyIndex = (difficultyIndex + 1) % difficulties.length;
+            targetSpeed = difficulties[difficultyIndex].speed;
+            difficultyBtn.textContent = "Difficulty: " + difficulties[difficultyIndex].name;
+        }
+
+        /* ===== TARGET MOVEMENT ===== */
+        let targetY = window.innerHeight / 2;
+        let direction = 1;
+
+        // target movement using requestAnimationFrame and respect isRunning
+        function moveTarget() {
+            if (!isRunning) return;
+
+            targetY += targetSpeed * direction;
+
+            if (targetY < 100 || targetY > window.innerHeight - 100) {
+                direction *= -1;
+            }
+
+            target.style.top = targetY + "px";
+            requestAnimationFrame(moveTarget);
+        }
+
+        moveTarget();
+
+        // start countdown timer
+        function startTimer() {
+            timeEl.textContent = 'Time: ' + timeLeft;
+            const t = setInterval(() => {
+                if (!isRunning) {
+                    clearInterval(t);
+                    return;
+                }
+                timeLeft -= 1;
+                timeEl.textContent = 'Time: ' + timeLeft;
+                if (timeLeft <= 0) {
+                    clearInterval(t);
+                    endGame();
+                }
+            }, 1000);
+        }
+
+        startTimer();
+
+        /* ===== SHOOT TOWARD CURSOR ===== */
+        // shoot when clicking the background (but not controls)
+        game.addEventListener("click", function (e) {
+            if (e.target === difficultyBtn) return;
+            if (e.target === target) return; // target has its own handler
+            shootArrow(e.clientX, e.clientY);
+        });
+
+        // click on target => shoot toward that point (stop propagation)
+        target.addEventListener('click', function (e) {
+            e.stopPropagation();
+            shootArrow(e.clientX, e.clientY);
+        });
+
+        function shootArrow(mouseX, mouseY) {
+            if (!isRunning || gameOver) return;
+
+            // create image arrow (expects arrow.png in same folder)
+            const arrow = document.createElement('img');
+            arrow.className = 'arrow';
+            arrow.src = 'arrow.png';
+            arrow.alt = 'arrow';
+
+
+            const bowRect = bow.getBoundingClientRect();
+            // anchor arrow at the bow center
+            let x = bowRect.left + bowRect.width / 2;
+            let y = bowRect.top + bowRect.height / 2;
+
+            arrow.style.left = x + 'px';
+            arrow.style.top = y + 'px';
+            arrow.style.position = 'absolute';
+            arrow.style.width = '18px';
+            arrow.style.transformOrigin = 'left center';
+
+            game.appendChild(arrow);
+
+            let dx = mouseX - x;
+            let dy = mouseY - y;
+            let length = Math.sqrt(dx * dx + dy * dy) || 1;
+
+            dx /= length;
+            dy /= length;
+
+            const angle = Math.atan2(dy, dx) * 180 / Math.PI;
+            // original image is vertical; translate to center vertically then rotate to travel angle
+            arrow.style.transform = `translateY(-50%) rotate(${angle + 90}deg)`;
+
+            const arrowSpeed = 12;
+
+            const interval = setInterval(() => {
+                if (!isRunning) {
+                    arrow.remove();
+                    clearInterval(interval);
+                    return;
+                }
+
+                x += dx * arrowSpeed;
+                y += dy * arrowSpeed;
+
+                arrow.style.left = x + 'px';
+                arrow.style.top = y + 'px';
+
+                if (checkHit(arrow, target)) {
+                    updateScore();
+                    arrow.remove();
+                    clearInterval(interval);
+                }
+
+                if (x < -100 || x > window.innerWidth + 100 || y < -100 || y > window.innerHeight + 100) {
+                    arrow.remove();
+                    clearInterval(interval);
+                }
+            }, 20);
+        }
+
+        function checkHit(a, t) {
+            const aRect = a.getBoundingClientRect();
+            const tRect = t.getBoundingClientRect();
+
+            return !(aRect.right < tRect.left || aRect.left > tRect.right || aRect.bottom < tRect.top || aRect.top > tRect.bottom);
+        }
+
+        function updateScore() {
+            score += 1;
+            scoreEl.textContent = 'Score: ' + score;
+            increaseDifficulty();
+        }
+
+        function increaseDifficulty() {
+            // increase speed slightly every 3 points and shrink target
+            if (score % 3 === 0) {
+                targetSpeed += 1;
+                const curW = parseInt(window.getComputedStyle(target).width, 10);
+                const newW = Math.max(40, curW - 10);
+                target.style.width = newW + 'px';
+                target.style.height = newW + 'px';
+                target.style.transition = 'width 0.3s, height 0.3s';
+            }
+        }
+
+        function endGame() {
+            isRunning = false;
+            gameOver = true;
+            // show game over overlay
+            const over = document.createElement('div');
+            over.id = 'gameOver';
+            over.style.position = 'absolute';
+            over.style.left = '50%';
+            over.style.top = '50%';
+            over.style.transform = 'translate(-50%, -50%)';
+            over.style.padding = '20px';
+            over.style.background = 'rgba(0,0,0,0.7)';
+            over.style.color = 'white';
+            over.style.fontSize = '22px';
+            over.style.textAlign = 'center';
+            over.innerHTML = `<div>Game Over</div><div>Score: ${score}</div><button id="restartBtn" style="margin-top:10px;padding:8px 12px">Restart</button>`;
+            game.appendChild(over);
+
+            document.getElementById('restartBtn').addEventListener('click', function () {
+                over.remove();
+                resetGame();
+            });
+        }
+
+        function resetGame() {
+            // reset state
+            score = 0;
+            timeLeft = 30;
+            isRunning = true;
+            gameOver = false;
+            scoreEl.textContent = 'Score: ' + score;
+            timeEl.textContent = 'Time: ' + timeLeft;
+            // restore target size and speed
+            target.style.width = '100px';
+            target.style.height = '100px';
+            targetSpeed = difficulties[difficultyIndex].speed;
+            // restart loops
+            moveTarget();
+            startTimer();
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <style>
+    #boundary {
+      width: 400px;
+      height: 300px;
+      border: 2px solid black;
+      position: relative;
+      margin: 50px auto;
+    }
+    #box {
+      width: 50px;
+      height: 50px;
+      background: tomato;
+      position: absolute;
+      transition: all 0.5s ease;
+    }
+    .button-container {
+      text-align: center;
+      margin: 20px auto;
+    }
+    button {
+      margin: 5px;
+      padding: 10px 20px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+    #speedDisplay {
+      text-align: center;
+      margin: 10px;
+      font-size: 18px;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <div class="button-container">
+    <button id="startStopButton" onclick="toggleMovement()">Start</button>
+    <button id="speedUp" onclick="increaseSpeed()">Speed +</button>
+    <button id="speedDown" onclick="decreaseSpeed()">Speed -</button>
+  </div>
+  <div id="speedDisplay">Speed: 0.5s</div>
+  <div id="boundary">
+    <div id="box"></div>
+  </div>
+  <script>
+    var speed = 0.5; // Initial speed in seconds
+    var isMoving = false;
+    var moveInterval;
+
+    function toggleMovement() {
+      var button = document.getElementById('startStopButton');
+      
+      if (isMoving) {
+        // Stop movement
+        clearInterval(moveInterval);
+        isMoving = false;
+        button.textContent = 'Start';
+      } else {
+        // Start movement
+        isMoving = true;
+        button.textContent = 'Stop';
+        moveBox(); // Move immediately
+        moveInterval = setInterval(moveBox, speed * 1000);
+      }
+    }
+
+    function moveBox() {
+      var boundary = document.getElementById('boundary');
+      var box = document.getElementById('box');
+      var maxX = boundary.clientWidth - box.clientWidth;
+      var maxY = boundary.clientHeight - box.clientHeight;
+      var randomX = Math.random() * maxX;
+      var randomY = Math.random() * maxY;
+      box.style.left = randomX + 'px';
+      box.style.top = randomY + 'px';
+    }
+
+    function increaseSpeed() {
+      if (speed > 0.1) {
+        speed -= 0.1;
+        updateSpeed();
+        
+        // Restart interval if currently moving
+        if (isMoving) {
+          clearInterval(moveInterval);
+          moveInterval = setInterval(moveBox, speed * 1000);
+        }
+      }
+    }
+
+    function decreaseSpeed() {
+      if (speed < 2.0) {
+        speed += 0.1;
+        updateSpeed();
+        
+        // Restart interval if currently moving
+        if (isMoving) {
+          clearInterval(moveInterval);
+          moveInterval = setInterval(moveBox, speed * 1000);
+        }
+      }
+    }
+
+    function updateSpeed() {
+      var box = document.getElementById('box');
+      var speedDisplay = document.getElementById('speedDisplay');
+      box.style.transition = 'all ' + speed.toFixed(1) + 's ease';
+      speedDisplay.textContent = 'Speed: ' + speed.toFixed(1) + 's';
+    }
+  </script>
+</body>
+</html>

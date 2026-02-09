@@ -542,7 +542,7 @@ img {
 #contact .form-group input,
 #contact .form-group textarea {
     background: var(--color-white);
-    border-color: #ddd;
+    border-color: #ce1c1c;
 }
 
 /* PSEUDO-CLASS: focus state on form inputs */
