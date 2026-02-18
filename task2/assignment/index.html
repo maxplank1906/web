@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Photo Editor</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="container">
+
+        <!-- LEFT PANEL: Filters + Rotate & Flip -->
+        <div class="sidebar">
+            <!-- Filters Panel -->
+            <div class="filters-panel">
+                <h2>Filters</h2>
+
+                <div class="filter-buttons">
+                    <button id="btn-brightness" class="filter-btn">Brightness</button>
+                    <button id="btn-saturation" class="filter-btn">Saturation</button>
+                    <button id="invert" class="filter-btn">Inversion</button>
+                    <button id="grayscale" class="filter-btn">Grayscale</button>
+                    <button id="sepia" class="filter-btn">Sepia</button>
+                    <button id="blur" class="filter-btn">Blur</button>
+                </div>
+
+                <!-- Shared filter slider (only visible for active filter) -->
+                <div id="filterControl" class="filter-control" aria-hidden="true">
+                    <input type="range" id="filterRange" min="-100" max="100" step="2" value="0">
+                    <div id="filterValue" class="filter-value">0%</div>
+                </div>
+            </div>
+
+            <!-- Rotate & Flip Panel -->
+            <div class="rotate-panel">
+                <h3>Rotate & Flip</h3>
+                <div class="rotate-control">
+                    <input type="range" id="rotateRange" min="-180" max="180" step="1" value="0">
+                    <div id="rotateValue" class="rotate-value">0°</div>
+                </div>
+                <div class="flip-buttons">
+                    <button id="flipH">Flip Horizontal</button>
+                    <button id="flipV">Flip Vertical</button>
+                </div>
+                <div class="rotate-actions">
+                    <button id="rotateLeft">Rotate Left</button>
+                    <button id="rotateRight">Rotate Right</button>
+                    <button id="reset">Reset</button>
+                </div>
+            </div>
+        </div>
+
+
+        <!-- CENTER CANVAS -->
+        <div class="canvas-area">
+            <canvas id="canvas"></canvas>
+        </div>
+
+
+        <!-- RIGHT PANEL -->
+        <div class="history-panel">
+            <h2>History</h2>
+            <div id="historyList"></div>
+
+            <button id="undo">Undo</button>
+            <button id="redo">Redo</button>
+
+            <input type="file" id="upload">
+            <button id="save">Save Image</button>
+        </div>
+
+    </div>
+
+<script src="script.js"></script>
+</body>
+</html>

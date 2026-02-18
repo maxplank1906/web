@@ -1,0 +1,101 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial;
+    background-color: #f4f4f4;
+}
+
+.container {
+    display: flex;
+    min-height: 100vh;
+}
+
+/* LEFT SIDEBAR */
+.sidebar {
+    width: 20%;
+    background: white;
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.sidebar input[type="range"] {
+    width: 100%;
+}
+
+.sidebar button {
+    padding: 6px;
+    cursor: pointer;
+}
+
+/* Filters panel */
+.filters-panel h2 { margin-bottom: 8px; }
+.filter-buttons { display: flex; flex-wrap: wrap; gap: 8px; }
+.filter-btn { flex: 1 1 45%; padding: 8px; background:#fff; border:1px solid #ccc; border-radius:4px; }
+.filter-btn.active { background:#1e90ff; color:#fff; border-color:#1e90ff; }
+.filter-control { display:flex; align-items:center; gap:8px; margin-top:10px; }
+#filterRange { flex:1; }
+.filter-value { min-width:48px; text-align:right; font-weight:600; }
+
+/* Rotate panel */
+.rotate-panel { border-top:1px solid #eee; padding-top:12px; }
+.rotate-panel h3 { margin:0 0 8px 0; }
+.rotate-control { display:flex; align-items:center; gap:8px; }
+.rotate-value { min-width:48px; text-align:right; font-weight:600; }
+.flip-buttons { display:flex; gap:8px; margin-top:8px; }
+.rotate-actions { display:flex; gap:8px; margin-top:8px; }
+
+
+/* CANVAS AREA */
+.canvas-area {
+    width: 60%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+canvas {
+    /* allow canvas to size itself to rotated bbox; avoid automatic scaling */
+    max-width: none;
+    width: auto;
+    height: auto;
+    border: none; /* border is drawn inside canvas so it rotates with image */
+    box-shadow: 0 0 0 1px rgba(0,0,0,0.06) inset;
+}
+
+/* HISTORY PANEL */
+.history-panel {
+    width: 20%;
+    background: white;
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+#historyList {
+    flex: 1;
+    overflow-y: auto;
+    border: 1px solid gray;
+    padding: 5px;
+}
+
+/* RESPONSIVE */
+@media (max-width: 768px) {
+    .container {
+        flex-direction: column;
+    }
+
+    .sidebar, .canvas-area, .history-panel {
+        width: 100%;
+    }
+
+    .filter-btn { flex: 1 1 48%; }
+    .filter-control, .rotate-control { width:100%; }
+    .filter-value, .rotate-value { min-width:40px; }
+}
