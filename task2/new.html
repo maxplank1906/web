@@ -1,0 +1,104 @@
+
+<!DOCTYPE html>          <!-- HTML5 declaration -->
+<html lang="en">         <!-- Root element -->
+<head>
+  <meta charset="UTF-8"> <!-- Char encoding -->
+  <meta name="viewport"  
+   content="width=device-width,
+   initial-scale=1.0">
+  <title>Web Dev Demo</title>
+  <link rel="stylesheet" href="stycle.css">
+  <!-- ↑ Links external CSS file -->
+</head>
+<body>
+ 
+<!-- SEMANTIC HEADER -->
+<header>
+  <h1>Student Portal</h1>
+  <!-- h1=largest heading, h1-h6 -->
+</header>
+ 
+<!-- NAV: navigation links -->
+<nav>
+  <a href="#">Home</a>    <!-- #=dummy href -->
+  <a href="#">About</a>
+</nav>
+ 
+<!-- SECTION: groups related content -->
+<section class="container">
+  <!-- class links element to CSS rule -->
+ 
+  <!-- ARTICLE: self-contained block -->
+  <article>
+    <h2>Add Student</h2>
+ 
+    <!-- FORM: id used by JavaScript -->
+    <form id="studentForm">
+ 
+      <!-- TEXT INPUT -->
+      <!-- required = HTML5 validation -->
+      <input type="text" id="name"
+       placeholder="Enter Name"
+       required>
+ 
+      <!-- NUMBER INPUT -->
+      <input type="number" id="marks"
+       placeholder="Enter Marks"
+       required>
+ 
+      <!-- SELECT: dropdown list -->
+      <select id="grade">
+        <!-- value=sent, text=shown -->
+        <option value="A">A</option>
+        <option value="B">B</option>
+      </select>
+ 
+      <!-- BUTTON: fires submit event -->
+      <button type="submit">Add</button>
+    </form>
+  </article>
+ 
+  <!-- ASIDE: sidebar/supplementary -->
+  <aside>
+    <h2>Student List</h2>
+ 
+    <!-- TABLE: border="1"=visible grid -->
+    <table border="1">
+ 
+      <!-- THEAD: header row (bold) -->
+      <thead>
+        <tr>  <!-- tr = table row -->
+          <th>Name</th>  <!-- th=header -->
+          <th>Marks</th>
+          <th>Grade</th>
+        </tr>
+      </thead>
+ 
+      <!-- TBODY: JS fills rows here -->
+      <tbody id="tableBody">
+        <!-- rows added dynamically -->
+      </tbody>
+    </table>
+  </aside>
+</section>
+ 
+<!-- &copy; = © copyright symbol -->
+<footer>
+  <p>&copy; 2026 Web Demo</p>
+</footer>
+ 
+<!-- SCRIPT at end: DOM exists first -->
+<script src="script.js"></script>
+</body>
+</html>
+ 
+<!-- ═══ KEY CONCEPTS ═══════════════
+ Block tags: div p h1-h6 section     
+   article header footer nav aside   
+   → new line, full width            
+ Inline tags: span a strong em img   
+   → stays in text flow              
+ Attributes: id(unique) class(group) 
+   href src alt placeholder required 
+   colspan rowspan name value type   
+═══════════════════════════════════ -->

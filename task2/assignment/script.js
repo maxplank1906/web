@@ -170,6 +170,12 @@ function updateHistoryPanel() {
         });
         historyList.appendChild(d);
     });
+
+
+
+
+
+    
 }
 
 function saveState(actionName = 'State') {

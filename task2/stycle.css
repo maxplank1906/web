@@ -1,0 +1,98 @@
+/* ── UNIVERSAL SELECTOR ── */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box; /* padding INSIDE width */
+  font-family: Arial;     /* global font */
+}
+ 
+/* ── ELEMENT SELECTOR ── */
+body {
+  background: #f4f4f4; /* light grey */
+}
+ 
+/* ── FLEXBOX LAYOUT ── */
+/* display:flex → children side-by-side */
+.container {       /* CLASS selector (.) */
+  display: flex;
+  justify-content: space-around;
+  /* space-around = even gaps between */
+  margin: 20px;
+}
+ 
+/* ── MULTIPLE SELECTORS ── */
+.container article,
+.container aside {
+  background: white;
+  padding: 20px;   /* inner space */
+  border: 1px solid #ccc;
+  width: 45%;
+}
+/* BOX MODEL (outside→in):
+   margin > border > padding > content */
+ 
+/* ── ID SELECTOR ── */
+#studentForm input,  /* # = unique id */
+#studentForm select {
+  display: block;   /* own line */
+  margin: 10px 0;   /* top/bot 10px */
+  padding: 5px;
+  width: 100%;
+}
+ 
+/* ── PSEUDO-CLASS ── */
+/* :hover triggers on mouse-over */
+button:hover {
+  background: black;
+  color: white;
+  cursor: pointer; /* hand icon */
+}
+/* Other pseudo: :focus :active       */
+/* :nth-child(n) :first-child         */
+ 
+/* ── POSITION: fixed ── */
+/* fixed = removed from flow,         */
+/* locked to viewport on scroll       */
+footer {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  text-align: center;
+  background: #ddd;
+}
+/* position values:                   */
+/* static   → default normal flow     */
+/* relative → offset from own spot    */
+/* absolute → offset from positioned  */
+/*            ancestor                */
+/* fixed    → locked to viewport      */
+/* sticky   → scrolls then sticks     */
+ 
+/* ── MEDIA QUERY ── */
+/* Responsive: runs at ≤768px only    */
+@media (max-width: 768px) {
+  .container {
+    flex-direction: column; /* stack */
+  }
+}
+ 
+/* ═══ MORE CSS CONCEPTS ════════════
+ Selectors: * el #id .cls el>p a+p   
+   [attr] ::before ::after           
+ Display: block inline inline-block  
+   none (hidden+no space)            
+ Flexbox extras:                     
+   align-items: center stretch       
+   flex-wrap: wrap  gap: 10px        
+   flex: 1 (child fills space)       
+ Grid: display:grid                  
+   grid-template-columns: 1fr 2fr    
+ Text: font-size font-weight         
+   line-height letter-spacing        
+   text-transform: uppercase         
+ Units: px rem em % vw vh            
+ CSS Vars: --color:#00f; var(--color) 
+ Transition: all 0.3s ease           
+ border-radius:50% → circle          
+ box-shadow:2px 2px 8px rgba(0,0,0,.3)
+══════════════════════════════════ */
