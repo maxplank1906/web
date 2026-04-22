@@ -1,14 +1,19 @@
 const mongoose = require("mongoose");
 
-// MongoDB schema for users
 const userSchema = new mongoose.Schema({
-  username: String,
-  password: String,
+  username: {
+    type: String,
+    required: true,
+    unique: true,
+  },
+  password: {
+    type: String,
+    required: true,
+  },
 });
 
-const UserModel = mongoose.model("User", userSchema);
+const UserModel = mongoose.model("User", userSchema, "users");
 
-// The User CLASS your instructor asked for
 class User {
   constructor(username, password) {
     this.username = username;
@@ -16,20 +21,28 @@ class User {
   }
 
   async register() {
+    const existingUser = await UserModel.findOne({ username: this.username });
+
+    if (existingUser) {
+      return "Username already exists";
+    }
+
     const newUser = new UserModel({
       username: this.username,
       password: this.password,
     });
+
     await newUser.save();
     return "User registered successfully";
   }
 
   async login() {
-    const found = await UserModel.findOne({
+    const foundUser = await UserModel.findOne({
       username: this.username,
       password: this.password,
     });
-    return found ? found : null;
+
+    return foundUser;
   }
 }
 

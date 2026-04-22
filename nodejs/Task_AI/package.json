@@ -1,0 +1,23 @@
+{
+  "name": "task-ai-login-system",
+  "version": "1.0.0",
+  "description": "AI-style login system using Express, MongoDB, Mongoose and sessions",
+  "main": "server.js",
+  "type": "commonjs",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "keywords": [
+    "express",
+    "mongoose",
+    "session",
+    "login-system"
+  ],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^5.2.1",
+    "express-session": "^1.19.0",
+    "mongoose": "^9.2.4"
+  }
+}
